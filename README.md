@@ -1,12 +1,26 @@
 # Media Archive
 
 # Description
-Archive website, that serves as a repository for physical media collections. This website aims to allow the user to display, share, and keep track of their collections.
+Archive website for posters. This website aims to allow the user to display, share, and keep track of their poster collection.
 
 ## Main Entities
--**Table 1:**User
--**Table 2:**Guest User
+-**User**
+- Username;
+- E-mail;
+- Password;
+- Profile Link.
+
+-**Posters**
+- File Type
+- File Size
+- Description
+- Format (size)
+- Author
+- Project
 
 ## Main Business Rules
 Verify users account details (e-mail, password, user);
 Verify that the user fills in all the blanks before making a post;
+Count of the users posts;
+Verify file type and size (images when creating posts);
+
