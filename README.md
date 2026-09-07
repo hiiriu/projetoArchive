@@ -17,10 +17,12 @@ Archive website for posters. This website aims to allow the user to display, sha
 - Format (size)
 - Author
 - Project
+- Date
 
 ## Main Business Rules
 Verify users account details (e-mail, password, user);
 Verify that the user fills in all the blanks before making a post;
 Count of the users posts;
 Verify file type and size (images when creating posts);
+
 
