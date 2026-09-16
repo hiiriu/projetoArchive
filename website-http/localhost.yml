@@ -1,0 +1,23 @@
+info:
+  name: localhost
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8080/api/user
+  body:
+    type: json
+    data: |-
+      {
+        "username": "miamiau",
+        "password": "oi",
+        "email": "papoi"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
