@@ -1,0 +1,24 @@
+info:
+  name: Poster
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: http://localhost:8080/api/user/poster
+  body:
+    type: json
+    data: |-
+      {
+        "description": "informação sobre o poster",
+        "location": "Coimbra",
+        "links": "http://localhost:8080/api/poster"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+​

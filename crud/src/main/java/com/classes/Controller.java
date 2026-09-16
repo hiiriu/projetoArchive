@@ -14,10 +14,9 @@ public class Controller {
 
     @Inject
     private Service service;
-
   
     //-------------- REGISTER ---------------
-
+    
     @POST
     public String user(User user) {
         service.registerUser(user);
@@ -47,6 +46,26 @@ public class Controller {
     public String changeUser(@PathParam("id") int id, User user) {
         service.changeUser(id, user);
         return "User Updated!";
+    }
+
+    //------------------------ POSTER --------------------------
+    @Path("/poster")
+    @POST
+    public String Poster(Poster poster) {
+        service.createPoster(poster);
+        return "Poster Added!";
+    }
+
+    @Path("/poster/{id}")
+    @GET
+    public Poster getPoster(@PathParam("id") int id) {
+        return service.getPoster(id);
+    }
+
+    @Path("/poster")
+    @GET
+    public List<Poster> getPoster() {
+        return service.getAllPosters();
     }
 
 }

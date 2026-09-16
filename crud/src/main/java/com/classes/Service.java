@@ -26,8 +26,7 @@ public class Service {
         // verificar que username n tem espaços
         // verificar que palavrapasse n tem espaços
         // verificar que passwords correspondem
-        
-
+    
     }
 
     public void deleteUser(int id) {
@@ -40,10 +39,26 @@ public class Service {
 
     public User getUser(int id) {
         return repository.findById(id);
-
     }
 
+    // ------------------------------ POSTER ------------------------------
     // verificar tipo de ficheiro
     // tamanho da descrição
 
+    public void createPoster(Poster poster) {
+        repository.savePoster(poster);
+
+        // verificar que username n tem espaços
+        // verificar que palavrapasse n tem espaços
+        // verificar que passwords correspondem
+    
+    }
+
+    public Poster getPoster(int id) {
+        return repository.findPosterById(id);
+    }
+
+     public List<Poster> getAllPosters() {
+        return repository.listarTodosPosters();
+    }
 }

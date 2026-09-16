@@ -17,14 +17,12 @@ public class Repository {
         return user;
     }
 
-    // apgar user
+    // Alteraoes User ----------------------------------
     @Transactional
     public void delete(int id) {
-        // procurar user pelo id
         User u = em.find(User.class, id);
         em.remove(u);
     }
-
     @Transactional
     public void change(int id, User user) {
         User u = em.find(User.class, id);
@@ -33,24 +31,31 @@ public class Repository {
         u.setPassword(user.getPassword());
     }
 
-    // ----- PESQUISA PELO CATEGORIAS DO USER ------
+    // Pesquisar User por if --------------------------
 
     @Transactional
     public User findById(int id) {
         return em.find(User.class, id);
-
     }
 
     public List<User> listarTodos() {
         return em.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
 
-    // ------------------------------------ POSTER
-    // -----------------------------------------
+    // ------------------------------------ POSTER -----------------------------------------
     @Transactional
     public Poster savePoster(Poster poster) {
         em.persist(poster);
         return poster;
+    }
+
+    @Transactional
+    public Poster findPosterById(int id) {
+        return em.find(Poster.class, id);
+    }
+
+    public List<Poster> listarTodosPosters() {
+        return em.createQuery("SELECT p FROM Poster p", Poster.class).getResultList();
     }
 
   

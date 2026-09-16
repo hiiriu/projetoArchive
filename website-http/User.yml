@@ -1,5 +1,5 @@
 info:
-  name: localhost
+  name: User
   type: http
   seq: 1
 
@@ -12,7 +12,7 @@ http:
       {
         "username": "nome",
         "password": "palavrapasse",
-        "email": "mar"
+        "email": "mar@email.com"
       }
   auth: inherit
 
