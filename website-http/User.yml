@@ -4,15 +4,15 @@ info:
   seq: 1
 
 http:
-  method: POST
+  method: GET
   url: http://localhost:8080/api/user
   body:
     type: json
     data: |-
       {
-        "username": "nome",
+        "username": "maria",
         "password": "palavrapasse",
-        "email": "mar@email.com"
+        "email": "maria@email.com"
       }
   auth: inherit
 

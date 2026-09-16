@@ -28,15 +28,6 @@ public class Service {
         // verificar que passwords correspondem
     
     }
-
-    public void deleteUser(int id) {
-        repository.delete(id);
-    }
-
-    public void changeUser(int id, User user) {
-        repository.change(id, user);
-    }
-
     public User getUser(int id) {
         return repository.findById(id);
     }
@@ -62,3 +53,15 @@ public class Service {
         return repository.listarTodosPosters();
     }
 }
+
+
+
+/*
+ public void deleteUser(int id) {
+        repository.delete(id);
+    }
+
+    public void changeUser(int id, User user) {
+        repository.change(id, user);
+    }
+*/

@@ -17,7 +17,7 @@ public class Poster
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String eventName;
+    private String title;
     private String location;
     private String description;
     private String links;
@@ -30,7 +30,7 @@ public class Poster
 
     public Poster(int id, String eventName){
          this.id = id;
-         this.eventName = eventName;
+         this.title = title;
          this.location = location;
          this.description = description;
          this.links = links;
@@ -46,10 +46,10 @@ public class Poster
     }
 
     public String getEventName() {
-        return eventName;
+        return title;
     }
     public void setEventNamet(String eventName) {
-        this.eventName = eventName;
+        this.title = eventName;
     }
 
     public String getLocation() {

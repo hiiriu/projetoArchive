@@ -17,20 +17,6 @@ public class Repository {
         return user;
     }
 
-    // Alteraoes User ----------------------------------
-    @Transactional
-    public void delete(int id) {
-        User u = em.find(User.class, id);
-        em.remove(u);
-    }
-    @Transactional
-    public void change(int id, User user) {
-        User u = em.find(User.class, id);
-        u.setUsername(user.getUsername());
-        u.setEmail(user.getEmail());
-        u.setPassword(user.getPassword());
-    }
-
     // Pesquisar User por if --------------------------
 
     @Transactional
@@ -60,3 +46,24 @@ public class Repository {
 
   
 }
+
+
+
+
+
+
+
+/*     // Alteraoes User ----------------------------------
+    @Transactional
+    public void delete(int id) {
+        User u = em.find(User.class, id);
+        em.remove(u);
+    }
+    @Transactional
+    public void change(int id, User user) {
+        User u = em.find(User.class, id);
+        u.setUsername(user.getUsername());
+        u.setEmail(user.getEmail());
+        u.setPassword(user.getPassword());
+    }
+ */

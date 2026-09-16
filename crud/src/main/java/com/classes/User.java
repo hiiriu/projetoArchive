@@ -16,12 +16,8 @@ public class User
     private int id;
 
     public String displayName;
-    
-    @NotNull(message = "Choose an username.")
     public String username;
-    @NotNull(message = "Choose a password.")
     private String password;
-    @Email(message = "This email is not valid.")
     public String email;
    
 
