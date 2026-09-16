@@ -1,12 +1,12 @@
 package com.classes;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity 
+@Table (name = "users")
 public class User 
 {
     public User(){}
@@ -15,11 +15,15 @@ public class User
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String username;
-    private String email;
-    private String password;
-    private String displayName;
+    public String displayName;
     
+    @NotNull(message = "Choose an username.")
+    public String username;
+    @NotNull(message = "Choose a password.")
+    private String password;
+    @Email(message = "This email is not valid.")
+    public String email;
+   
 
     public User(String username, String email, String password, String displayName) {
         this.username = username;

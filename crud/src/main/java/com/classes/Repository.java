@@ -17,10 +17,10 @@ public class Repository {
         return user;
     }
 
-        //apgar personagem
+    // apgar user
     @Transactional
     public void delete(int id) {
-        //procurar personagem pelo id
+        // procurar user pelo id
         User u = em.find(User.class, id);
         em.remove(u);
     }
@@ -33,9 +33,10 @@ public class Repository {
         u.setPassword(user.getPassword());
     }
 
+    // ----- PESQUISA PELO CATEGORIAS DO USER ------
 
     @Transactional
-    public User buscar(int id) {
+    public User findById(int id) {
         return em.find(User.class, id);
 
     }
@@ -43,4 +44,14 @@ public class Repository {
     public List<User> listarTodos() {
         return em.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
+
+    // ------------------------------------ POSTER
+    // -----------------------------------------
+    @Transactional
+    public Poster savePoster(Poster poster) {
+        em.persist(poster);
+        return poster;
+    }
+
+  
 }

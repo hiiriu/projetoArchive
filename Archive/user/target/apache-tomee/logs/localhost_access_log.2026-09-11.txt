@@ -1,0 +1,9 @@
+127.0.0.1 - - [11/Sep/2026:15:05:58 +0100] "POST /api/personagem HTTP/1.1" 404 700
+127.0.0.1 - - [11/Sep/2026:15:05:59 +0100] "POST /api/personagem HTTP/1.1" 404 700
+127.0.0.1 - - [11/Sep/2026:15:06:14 +0100] "POST /api/personagem HTTP/1.1" 404 700
+127.0.0.1 - - [11/Sep/2026:15:06:18 +0100] "POST /api/personagem HTTP/1.1" 404 700
+127.0.0.1 - - [11/Sep/2026:15:06:18 +0100] "POST /api/personagem HTTP/1.1" 404 700
+127.0.0.1 - - [11/Sep/2026:15:06:18 +0100] "POST /api/personagem HTTP/1.1" 404 700
+127.0.0.1 - - [11/Sep/2026:15:06:19 +0100] "POST /api/personagem HTTP/1.1" 404 700
+127.0.0.1 - - [11/Sep/2026:15:07:01 +0100] "POST /api/personagem HTTP/1.1" 404 700
+127.0.0.1 - - [11/Sep/2026:15:07:06 +0100] "GET /api/personagem HTTP/1.1" 404 700

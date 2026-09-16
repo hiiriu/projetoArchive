@@ -15,13 +15,19 @@ public class Service {
     }
 
     // ---------------- REGISTER -----------------
-    // verificar que o user ainda nao existe
-    // email valido
-    // blanks preenchidos
-    // confirmar password
+
+    // email valido - user
+    // blanks preenchidos - feito para o username
+
     public void registerUser(User user) {
 
         repository.save(user);
+
+        // verificar que username n tem espaços
+        // verificar que palavrapasse n tem espaços
+        // verificar que passwords correspondem
+        
+
     }
 
     public void deleteUser(int id) {
@@ -32,9 +38,8 @@ public class Service {
         repository.change(id, user);
     }
 
-
     public User getUser(int id) {
-        return repository.buscar(id);
+        return repository.findById(id);
 
     }
 
@@ -42,4 +47,3 @@ public class Service {
     // tamanho da descrição
 
 }
-

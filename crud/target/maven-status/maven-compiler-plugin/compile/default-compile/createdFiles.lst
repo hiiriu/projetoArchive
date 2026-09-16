@@ -1,5 +1,6 @@
 com\classes\Repository.class
 com\classes\Controller.class
+com\classes\Poster.class
 com\classes\RestApplication.class
 com\classes\Service.class
 com\classes\User.class
