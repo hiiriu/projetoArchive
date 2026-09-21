@@ -14,12 +14,13 @@ public class Controller {
     private Service service;
   
     //-------------- REGISTER ---------------
-    @Path("/register")
     @POST
     public String user(User user) {
         service.registerUser(user);
         return "Account Created!";
     }
+
+    
 
     @Path("/{id}")
     @GET
@@ -55,7 +56,6 @@ public class Controller {
     }
 
 }
-
 
 
 

@@ -5,10 +5,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 
 @Entity 
-@Table (name = "posters")
 public class Poster 
 {
    public Poster(){}
@@ -17,16 +15,24 @@ public class Poster
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String title;
-    private String location;
-    private String description;
-    private String links;
-    private String imgURL;
+    public String title;
+    public String location;
+    public String description;
+    public String links;
+    public String img;
 
     @ManyToOne
     @JoinColumn (name = "id_users")
     private User user;
 
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Poster(int id, String eventName){
          this.id = id;
@@ -34,7 +40,7 @@ public class Poster
          this.location = location;
          this.description = description;
          this.links = links;
-         this.imgURL = imgURL;
+         this.img = img;
       
     }
 
@@ -73,11 +79,13 @@ public class Poster
         this.links = links;
     }
 
-        public String getImgURL() {
-        return imgURL;
+    public String getImg() {
+        return img;
     }
-    public void setImgURL(String imgURL) {
-        this.imgURL = imgURL;
+    public void setImg(String img) {
+        this.img = img;
     }
+    
+    
 
 }

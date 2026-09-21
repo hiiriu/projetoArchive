@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Create New Poster</title>
+    <link rel='stylesheet' href='main.css'>
+</head>
+<body>
+    
+
+     <form id="form_createposter" method="POST" action="Controller">
+
+            <label for="posterImg">Upload Poster:</label>
+            <input required name="posterImg" type="image"><br>
+            <label for="title">Title:</label>
+            <input required name="title" type="text" class="title"><br>
+            <label for="description">Description:</label>
+            <input name="description" type="text" class="description"><br>
+            <label for="location">Location:</label>
+            <input name="location" type="text" class="location"><br>
+            <label for="link">Link:</label>
+            <input name="link" type="text" ><br>
+            <input type="submit" value="Submit">
+
+    </form>
+</body>
+</html>

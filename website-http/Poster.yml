@@ -12,7 +12,8 @@ http:
       {
         "description": "informação sobre o poster",
         "location": "Coimbra",
-        "links": "http://localhost:8080/api/poster"
+        "links": "http://localhost:8080/api/poster",
+        "user" : {"id" : 1}
       }
   auth: inherit
 
@@ -21,4 +22,3 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
-​

@@ -1,12 +1,8 @@
 package com.classes;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-
 
 @Entity 
-@Table (name = "users")
 public class User 
 {
     public User(){}
@@ -21,11 +17,11 @@ public class User
     public String email;
    
 
-    public User(String username, String email, String password, String displayName) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.displayName = displayName;
+    
     }
 
     // getters e setters

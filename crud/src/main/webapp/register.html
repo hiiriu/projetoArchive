@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Register</title>
+    <link rel='stylesheet' href='main.css'>
+</head>
+<body>
+    <div>
+        <form id="form_register" method="POST" action="api/user/register">
+
+            <label for="username">Username:</label>
+            <input required name="username" type="text" class="username"><br>
+            <label for="email">E-mail:</label>
+            <input required name="email" type="email" class="email"><br>
+            <label for="password">Password:</label>
+            <input required name="password" type="password" class="password"><br>
+            <label for="confPass">Confirm Password:</label>
+            <input required name="confPass" type="password" ><br>
+            <input type="submit" value="Submit">
+
+        </form>
+    </div>
+</body>
+</html>

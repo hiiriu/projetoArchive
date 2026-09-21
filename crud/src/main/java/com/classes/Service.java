@@ -52,8 +52,24 @@ public class Service {
      public List<Poster> getAllPosters() {
         return repository.listarTodosPosters();
     }
-}
 
+    // ---------------- LOGIN -----------------
+
+    // email valido - user
+    // blanks preenchidos - feito para o username
+/*
+    public User login(String username, String password) {
+
+        User user = repository.findByUsername(username);
+        repository.save(user);
+
+        // verificar que username n tem espaços
+        // verificar que palavrapasse n tem espaços
+        // verificar que passwords correspondem
+    
+    }
+} */
+}
 
 
 /*
