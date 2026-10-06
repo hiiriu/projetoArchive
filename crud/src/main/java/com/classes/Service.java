@@ -1,6 +1,10 @@
 package com.classes;
 
 import java.util.List;
+
+import com.classes.model.Poster;
+import com.classes.model.User;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -14,70 +18,56 @@ public class Service {
         return repository.listarTodos();
     }
 
-    // ---------------- REGISTER -----------------
-
-    // email valido - user
-    // blanks preenchidos - feito para o username
+    // ---------------- REGISTER ----------------
 
     public void registerUser(User user) {
 
         repository.save(user);
-
-        // verificar que username n tem espaços
-        // verificar que palavrapasse n tem espaços
         // verificar que passwords correspondem
-    
     }
+
     public User getUser(int id) {
         return repository.findById(id);
     }
 
+    public User getUsername(String username) {
+        return repository.findByUsername(username);
+    }
+
     // ------------------------------ POSTER ------------------------------
     // verificar tipo de ficheiro
-    // tamanho da descrição
 
     public void createPoster(Poster poster) {
         repository.savePoster(poster);
-
-        // verificar que username n tem espaços
-        // verificar que palavrapasse n tem espaços
-        // verificar que passwords correspondem
-    
     }
 
     public Poster getPoster(int id) {
         return repository.findPosterById(id);
     }
 
-     public List<Poster> getAllPosters() {
+    public List<Poster> getAllPosters() {
         return repository.listarTodosPosters();
     }
 
     // ---------------- LOGIN -----------------
 
-    // email valido - user
-    // blanks preenchidos - feito para o username
-/*
     public User login(String username, String password) {
 
         User user = repository.findByUsername(username);
-        repository.save(user);
 
-        // verificar que username n tem espaços
-        // verificar que palavrapasse n tem espaços
-        // verificar que passwords correspondem
-    
+        if (!user.getPassword().equals(password) || user == null) {
+            return null;
+
+        }
+
+        return user;
     }
-} */
-}
 
-
-/*
- public void deleteUser(int id) {
+    public void deleteUser(int id) {
         repository.delete(id);
     }
 
     public void changeUser(int id, User user) {
         repository.change(id, user);
     }
-*/
+}

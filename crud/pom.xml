@@ -58,7 +58,7 @@
       <artifactId>jakarta.persistence-api</artifactId>
       <version>3.0.0</version>
       <scope>provided</scope>
-    </dependency>  
+    </dependency>
     <dependency>
       <groupId>jakarta.transaction</groupId>
       <artifactId>jakarta.transaction-api</artifactId>
@@ -66,10 +66,25 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-    <groupId>org.hibernate.validator</groupId>
-    <artifactId>hibernate-validator</artifactId>
-    <version>9.1.0.Final</version>
-</dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>9.1.0.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.servlet.jsp.jstl</groupId>
+      <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.13</version>
+    </dependency>
+    <dependency>
+    <groupId>jcache</groupId>
+    <artifactId>jcache</artifactId>
+    <version>1.0-dev-2</version>
+</dependency> 
   </dependencies>
 
   <build>

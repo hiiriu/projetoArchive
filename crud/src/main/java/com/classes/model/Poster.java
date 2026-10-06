@@ -1,10 +1,13 @@
-package com.classes;
+package com.classes.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity 
 public class Poster 
@@ -15,10 +18,16 @@ public class Poster
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank(message = "Title is required") @Size(min = 3, max = 30, message = "Title must be between 3 and 30 characters")
     public String title;
+
+    @Pattern(regexp = "^[a-zA-Z0-9-]+$", message = "Location can only contain letters, digits and dashes")
     public String location;
+    @Size(min = 0, max = 200, message = "Description can't be longer than 200 characters ")
     public String description;
     public String links;
+
+    @NotBlank(message = "An image is required")
     public String img;
 
     @ManyToOne

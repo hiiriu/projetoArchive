@@ -1,10 +1,12 @@
 package com.classes;
 
-import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import jakarta.enterprise.context.ApplicationScoped;
+import java.util.*;
+import com.classes.model.Poster;
+import com.classes.model.User;
 
 @ApplicationScoped
 public class Repository {
@@ -17,6 +19,10 @@ public class Repository {
         return user;
     }
 
+     public List<User> listarTodos() {
+        return em.createQuery("SELECT u FROM User u", User.class).getResultList();
+    }
+
     // Pesquisar User por if --------------------------
 
     @Transactional
@@ -24,9 +30,16 @@ public class Repository {
         return em.find(User.class, id);
     }
 
-    public List<User> listarTodos() {
-        return em.createQuery("SELECT u FROM User u", User.class).getResultList();
+    public User findByUsername(String username) {
+        return em.createQuery(
+            "SELECT u FROM User WHERE u.username = :username",
+            User.class
+        ).setParameter("username", username)
+        .getResultStream()
+        .findFirst()
+        .orElse(null);
     }
+    
 
     // ------------------------------------ POSTER -----------------------------------------
     @Transactional
@@ -44,16 +57,8 @@ public class Repository {
         return em.createQuery("SELECT p FROM Poster p", Poster.class).getResultList();
     }
 
-  
-}
 
-
-
-
-
-
-
-/*     // Alteraoes User ----------------------------------
+     // Alteraoes User ----------------------------------
     @Transactional
     public void delete(int id) {
         User u = em.find(User.class, id);
@@ -66,4 +71,8 @@ public class Repository {
         u.setEmail(user.getEmail());
         u.setPassword(user.getPassword());
     }
- */
+  
+}
+
+
+  

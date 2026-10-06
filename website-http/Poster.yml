@@ -4,7 +4,7 @@ info:
   seq: 1
 
 http:
-  method: GET
+  method: POST
   url: http://localhost:8080/api/user/poster
   body:
     type: json
@@ -12,7 +12,9 @@ http:
       {
         "description": "informação sobre o poster",
         "location": "Coimbra",
+        "title": "titulo",
         "links": "http://localhost:8080/api/poster",
+        "img":"img",
         "user" : {"id" : 1}
       }
   auth: inherit
