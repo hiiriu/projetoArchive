@@ -1,30 +1,181 @@
 <!DOCTYPE html>
 <html lang='en'>
+
 <head>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <title>Create New Poster</title>
     <link rel='stylesheet' href='main.css'>
+
+    <style>
+        #drop-zone {
+            height:10vw;
+            border: 2px dashed #6c6e8a;
+            background-color: rgb(191, 198, 255);
+            border-radius: 12px;
+            padding: 35px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #drop-zone.dragover {
+            background: #eeeeee;
+            border-color: #333;
+        }
+
+        #preview {
+            display: none;
+            max-width: 250px;
+            max-height: 250px;
+            margin: 15px auto;
+            object-fit: contain;
+        }
+
+
+        #form{
+            margin-top: 2vh;
+            display: flex; 
+            align-items: center;
+            justify-content: end;
+            flex-direction: column;
+            
+        }
+
+
+    </style>
 </head>
+
 <body>
-    
+    <h1>Upload a poster</h1>
 
-     <form id="form_createposter" method="POST" action="Controller">
-
-            <label for="posterImg">Upload Poster:</label>
-            <input required name="posterImg" type="image"><br>
-            <label for="title">Title:</label>
-            <input required name="title" type="text" class="title"><br>
-            <label for="description">Description:</label>
-            <input name="description" type="text" class="description"><br>
-            <label for="location">Location:</label>
-            <input name="location" type="text" class="location"><br>
-            <label for="link">Link:</label>
-            <input name="link" type="text" ><br>
-            <input type="submit" value="Submit">
-
+    <form id="form_createposter" method="POST" action="Controller">
+        <div id="drop-zone" tabindex="0" role="button">
+            <p>Drag and drop an image here, or click to select one.</p>
+            <input id="posterImg" name="posterImg" type="file" accept="image/jpeg,image/png" hidden>
+            <img id="preview" alt="Image preview">
+        </div>
+        
+    <div id="form">
+        <label for="title">Title:</label>
+        <input required name="title" type="text" class="title"><br>
+        <label for="description">Description:</label>
+        <input name="description" type="text" class="description"><br>
+        <label for="location">Location:</label>
+        <input name="location" type="text" class="location"><br>
+        <label for="link">Link:</label>
+        <input name="link" type="text"><br>
+        <input type="submit" value="Submit" class="btn-solid theme-primary">
+    </div>
     </form>
 
     <script src="main.js"></script>
+
+    <script>
+
+        const form = document.getElementById("form_createposter");
+        const dropZone = document.getElementById("drop-zone");
+        const fileInput = document.getElementById("posterImg");
+        const preview = document.getElementById("preview");
+
+        let selectedFile = null;
+
+        function selectImage(file) {
+            if (!file) return;
+
+            const allowedTypes = ["image/jpeg", "image/png"];
+            if (!allowedTypes.includes(file.type)) {
+                alert("Please select a JPG, JPEG or PNG image.");
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                alert("The image must be smaller than 5 MB.");
+                return;
+            }
+            selectedFile = file;
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = "block";
+        }
+
+        dropZone.addEventListener("click", () => fileInput.click());
+
+        dropZone.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                fileInput.click();
+            }
+        });
+
+        fileInput.addEventListener("change", () => {
+            selectImage(fileInput.files[0]);
+        });
+
+        dropZone.addEventListener("dragover", (event) => {
+            event.preventDefault();
+            dropZone.classList.add("dragover");
+        });
+
+        dropZone.addEventListener("dragleave", () => {
+            dropZone.classList.remove("dragover");
+        });
+
+        dropZone.addEventListener("drop", (event) => {
+            event.preventDefault();
+            dropZone.classList.remove("dragover");
+            selectImage(event.dataTransfer.files[0]);
+        });
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            console.log("Submit handler triggered");
+
+            if (!selectedFile) {
+                alert("Please select an image.");
+                console.error("No image selected");
+                return;
+            }
+
+            const data = new FormData();
+            data.append("title", form.elements["title"].value.trim());
+            data.append("description", form.elements["description"].value.trim());
+            data.append("location", form.elements["location"].value.trim());
+            data.append("link", form.elements["link"].value.trim());
+            data.append("posterImg", selectedFile, selectedFile.name);
+
+            try {
+                console.log("Sending poster upload request...");
+
+                const response = await fetch("upload-poster", {
+                    method: "POST",
+                    credentials: "same-origin",
+                    body: data
+                });
+
+                const message = await response.text();
+
+                console.log("HTTP status:", response.status);
+                console.log("Server response:", message);
+
+                if (response.status === 401) {
+                    alert("Your session has expired. Please log in again.");
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                if (!response.ok) {
+                    alert("Upload failed (" + response.status + "): " + message);
+                    return;
+                }
+
+                alert("Poster created successfully!");
+                window.location.href = "profile.html";
+
+            } catch (error) {
+                console.error("Upload error:", error);
+                alert("Unable to connect to the server. Check the console.");
+            }
+        });
+
+    </script>
 </body>
+
 </html>

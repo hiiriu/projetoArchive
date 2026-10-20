@@ -1,77 +1,132 @@
 package com.classes;
 
 import java.util.List;
+import java.util.Map;
+
 import com.classes.model.Poster;
 import com.classes.model.User;
-import com.classes.Service;
-import jakarta.enterprise.inject.Produces;
+
 import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.io.InputStream;
 
 @Path("/user")
-@jakarta.ws.rs.Produces (MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class Controller {
 
     @Inject
     private Service service;
+
+    // -------------- REGISTER ---------------
+    @POST
+    public Response user(User user) {
+        boolean valid = service.registerUser(user);
+
+        if (!valid) {
+            return Response.status(Response.Status.CONFLICT)
+                    .entity("Username already exists")
+                    .type(MediaType.TEXT_PLAIN)
+                    .build();
+        }
+
+        return Response.status(Response.Status.CREATED)
+                .entity("Account Created!")
+                .type(MediaType.TEXT_PLAIN)
+                .build();
+
+    }
 
     @GET
     public List<User> getUser() {
         return service.getAll();
     }
 
-    //-------------- REGISTER ---------------
+    // --------- LOGIN ----------
     @POST
-    public String user(User user) {
-        service.registerUser(user);
-        return "Account Created!";
+    @Path("/login")
+    public Response login(
+            Map<String, String> credentials,
+            @Context HttpServletRequest request) {
+
+        String username = credentials.get("username");
+        String password = credentials.get("password");
+
+        User user = service.login(username, password);
+
+        if (user == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(Map.of("error", "Invalid username or password"))
+                    .build();
+        }
+
+        HttpSession oldSession = request.getSession(false);
+        if (oldSession != null) {
+            oldSession.invalidate();
+        }
+
+        HttpSession session = request.getSession(true);
+        session.setAttribute("userId", user.getId());
+
+        return Response.ok(
+                Map.of("message", "Login successful")).build();
     }
 
-    @Path("/{id}")
+    // verificar sessao e guardar informação do user
     @GET
-    public User getUser(@PathParam("id") int id) {
-        return service.getUser(id);
+    @Path("/me")
+    public Response getCurrentUser(
+            @Context HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+
+        if (session == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(Map.of("error", "Not logged in"))
+                    .build();
+        }
+
+        Integer userId = (Integer) session.getAttribute("userId");
+
+        if (userId == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(Map.of("error", "Not logged in"))
+                    .build();
+        }
+
+        User user = service.getUser(userId);
+
+        if (user == null) {
+            session.invalidate();
+
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(Map.of("error", "User not found"))
+                    .build();
+        }
+
+        return Response.ok(Map.of(
+                "id", user.getId(),
+                "username", user.getUsername(),
+                "displayname", user.getDisplayname())).build();
     }
 
-    //------------------------ POSTER --------------------------
-    @Path("/poster")
+    // terminar sessao
     @POST
-    public String Poster(Poster poster) {
-        service.createPoster(poster);
-        return "Poster Added!";
+    @Path("/logout")
+    public Response logout(
+            @Context HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            session.invalidate();
+        }
+
+        return Response.noContent().build();
     }
-
-    @Path("/poster/{id}")
-    @GET
-    public Poster getPoster(@PathParam("id") int id) {
-        return service.getPoster(id);
-    }
-
-    @Path("/poster")
-    @GET
-    public List<Poster> getPoster() {
-        return service.getAllPosters();
-    }
-
-    
-    @Path("/{id}")
-    @DELETE
-    public String deleteUser(@PathParam("id") int id) {
-        service.deleteUser(id);
-        return "User Deleted!";
-    }
-
-    @Path("/{id}")
-    @PUT
-    public String changeUser(@PathParam("id") int id, User user) {
-        service.changeUser(id, user);
-        return "User Updated!";
-    } 
-
 }
-
-
-
-  

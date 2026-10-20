@@ -1,21 +1,161 @@
 <!DOCTYPE html>
 <html lang='en'>
+
 <head>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <title>Display name's Wall</title>
+    <title>Displayname's Wall</title>
     <link rel='stylesheet' href='main.css'>
+
+    <style>
+        body {
+            left: 0;
+            top: 0;
+            padding: 0;
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        nav {
+            position: sticky;
+            right: 0;
+            width: 20vw;
+            height: 10vw;
+        }
+
+        .botao {
+            position: absolute;
+            padding: 10px, 20px;
+            width: auto;
+            height: 2vw;
+            border-radius: 12px;
+            background-color: rgb(37, 37, 73);
+            color: white;
+            text-decoration: none;
+        }
+
+        .botao:hover {
+            background-color: rgb(59, 59, 83);
+        }
+
+        #infoUser{
+            width: 20vw;
+            height: 6 vh;
+        }
+    </style>
 </head>
+
 <body>
-    <h2 id="name">dispply name</h2>
-    <p id="username">username</p>
-    <p id="description">descriçao</p>
+    <nav>
+        <button id="logoutBtn" type="button">Log Out</button>
+        <a href="index.html" class="botao"> Home </a>
+        <a href="createPoster.html" class="botao"> + </a>
 
-    <section id="all_posters">
-        <a href="poster.html"><img src="posters/01_username.jpeg"></a>
-    </section>
+    </nav>
 
-    
-<script src="main.js"></script>
+    <div id="infoUser">
+        <h2 id="displayname"></h2>
+        <p id="username"></p>
+        <p id="description"></p>
+    </div>
+
+    <section id="all_posters"></section>
+
+
+    <script src="main.js"></script>
+    <script>
+        async function loadMyPosters() {
+            const container = document.getElementById("all_posters");
+
+            try {
+                const res = await fetch("api/user/my-posters", {
+                    credentials: "same-origin"
+                });
+
+                if (res.status === 401) {
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                if (!res.ok) {
+                    throw new Error("Failed to load posters");
+                }
+
+                const posters = await res.json();
+
+                container.replaceChildren();
+
+                if (posters.length === 0) {
+                    container.innerText = "You haven't created any posters yet.";
+                    return;
+                }
+
+                posters.forEach(poster => {
+
+                    link.href = `poster.html?id=${encodeURIComponent(poster.id)}`;
+
+                    const img = document.createElement("img");
+                    img.src = `poster-image/${encodeURIComponent(poster.img)}`;
+                    img.alt = poster.title;
+                    img.loading = "lazy";
+
+                    const title = document.createElement("p");
+                    title.innerText = poster.title;
+
+                    link.appendChild(img);
+                    link.appendChild(title);
+                    container.appendChild(link);
+                });
+
+            } catch (error) {
+                console.error("Error loading posters:", error);
+                container.textContent = "Unable to load posters.";
+            }
+        }
+        async function loadProfile() {
+            try {
+                const res = await fetch("api/user/me", {
+                    credentials: "same-origin"
+                });
+
+                if (res.status === 401) {
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                if (!res.ok) {
+                    throw new Error("Failed to load profile");
+                }
+
+                const user = await res.json();
+
+                document.getElementById("displayname").innerText =
+                    user.displayname;
+
+                document.getElementById("username").textContent =
+                    "@" + user.username;
+
+                document.title = user.displayname + "'s Wall";
+
+            } catch (error) {
+                console.error("Error loading profile:", error);
+            }
+        }
+
+        loadProfile();
+        loadMyPosters();
+
+        document.getElementById("logoutBtn").addEventListener("click", async function logout() {
+            await fetch("api/user/logout", {
+                method: "POST",
+                credentials: "same-origin"
+            });
+
+            window.location.href = "login.html";
+        });
+
+    </script>
 </body>
+
 </html>

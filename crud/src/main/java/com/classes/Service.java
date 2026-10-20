@@ -1,5 +1,10 @@
 package com.classes;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 import com.classes.model.Poster;
@@ -7,6 +12,8 @@ import com.classes.model.User;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import java.nio.file.Path;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class Service {
@@ -16,14 +23,20 @@ public class Service {
 
     public List<User> getAll() {
         return repository.listarTodos();
+
     }
 
     // ---------------- REGISTER ----------------
 
-    public void registerUser(User user) {
+    public boolean registerUser(User user) {
+        if (repository.findByUsername(user.username) != null) {
+            System.out.println("username already exists");
+            return false;
 
-        repository.save(user);
-        // verificar que passwords correspondem
+        } else {
+            repository.save(user);
+            return true;
+        }
     }
 
     public User getUser(int id) {
@@ -32,6 +45,22 @@ public class Service {
 
     public User getUsername(String username) {
         return repository.findByUsername(username);
+    }
+
+    // ---------------- LOGIN -----------------
+
+    public User login(String username, String password) {
+
+        User user = repository.findByUsername(username);
+        if (user == null) {
+            return null;
+        }
+
+        if (!user.getPassword().equals(password)) {
+            return null;
+        }
+
+        return user;
     }
 
     // ------------------------------ POSTER ------------------------------
@@ -49,25 +78,69 @@ public class Service {
         return repository.listarTodosPosters();
     }
 
-    // ---------------- LOGIN -----------------
+    @Transactional
+    public void createPosterWithImage(
+            Poster poster,
+            InputStream input,
+            String extension,
+            String username) throws IOException {
 
-    public User login(String username, String password) {
+        poster.img = "pending";
+        repository.savePoster(poster);
 
-        User user = repository.findByUsername(username);
+        String safeUsername = username.replaceAll("[^a-zA-Z0-9_-]", "_");
 
-        if (!user.getPassword().equals(password) || user == null) {
-            return null;
+        String filename = safeUsername + "_" + poster.getId() + extension;
 
+        Path directory = getImageDirectory();
+        Files.createDirectories(directory);
+
+        Path destination = directory.resolve(filename).normalize();
+
+        if (!destination.getParent().equals(directory)) {
+            throw new IOException("Invalid image path");
         }
 
-        return user;
+        try {
+            try (OutputStream output = Files.newOutputStream(
+                    destination,
+                    StandardOpenOption.CREATE_NEW,
+                    StandardOpenOption.WRITE)) {
+
+                byte[] buffer = new byte[8192];
+                int count;
+                long total = 0;
+
+                while ((count = input.read(buffer)) != -1) {
+                    total += count;
+
+                    if (total > 5 * 1024 * 1024) {
+                        throw new IOException("Image exceeds 5 MB");
+                    }
+
+                    output.write(buffer, 0, count);
+                }
+
+                if (total == 0) {
+                    throw new IOException("Empty image");
+                }
+            }
+
+            poster.img = filename;
+            repository.savePosterUpdate(poster);
+
+        } catch (IOException | RuntimeException e) {
+            Files.deleteIfExists(destination);
+            throw e;
+        }
     }
 
-    public void deleteUser(int id) {
-        repository.delete(id);
-    }
+    private Path getImageDirectory() {
+    String configured = System.getProperty(
+            "posters.upload.dir",
+            "posters"
+    );
 
-    public void changeUser(int id, User user) {
-        repository.change(id, user);
-    }
+    return Path.of(configured).toAbsolutePath().normalize();
+}
 }

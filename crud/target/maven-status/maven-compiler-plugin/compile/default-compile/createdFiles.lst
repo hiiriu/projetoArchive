@@ -1,6 +1,8 @@
+com\classes\AppPath.class
 com\classes\Repository.class
 com\classes\Controller.class
+com\classes\PosterServlet.class
 com\classes\model\User.class
-com\classes\config\AppPath.class
+com\classes\PosterImageServlet.class
 com\classes\model\Poster.class
 com\classes\Service.class

@@ -15,7 +15,7 @@
             "name": "Attach to TomEE (Maven)",
             "request": "attach",
             "hostName": "localhost",
-            "port": 5005,
+            "port": 5005
         }
     ]
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tomee>
+    <Resource id="MariaDB" type="javax.sql.DataSource">
+        JdbcDriver = org.mariadb.jdbc.Driver
+        JdbcUrl = jdbc:mariadb://localhost:3307/archive
+        UserName = archive_user
+        Password = user123
+        JtaManaged = true
+    </Resource>
+</tomee>

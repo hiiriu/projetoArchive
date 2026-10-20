@@ -1,4 +1,4 @@
-package com.classes.config;
+package com.classes;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;

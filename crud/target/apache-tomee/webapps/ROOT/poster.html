@@ -33,6 +33,8 @@
             width: 50vw;
             height: 100vh;
             overflow-y: scroll;
+            display: flex;
+            flex-direction: row;
         }
 
         #cont_posters {
@@ -45,15 +47,32 @@
             height: auto;
         }
 
-        h2 {
-            margin: 0;
-        }
-
-        .poster {
+         .poster {
             width: 40vw;
             height: auto;
             margin: 4vh 0;
 
+        }
+
+         #dots_cont{
+            height: 80vh;
+            width:2vw;
+            display:flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        .dot{
+            margin: 0.5vw;
+            width:1vw;
+            height:1vw;
+            background-color: blueviolet;
+            border-radius: 2vw;
+        }
+
+        h2 {
+            margin: 0;
         }
 
         aside {
@@ -97,6 +116,9 @@
         .spacer {
             height: 2vh;
         }
+
+       
+
     </style>
 </head>
 
@@ -104,8 +126,9 @@
     <section id="poster_section">
         <div id="cont_posters">
             <div class="indv_posters"><img class="poster" src="posters/01_username.jpeg"></div>
-            <img class="poster" src="posters/01_username.jpeg">
-            <img class="poster" src="posters/01_username.jpeg">
+        </div>
+        <div id="dots_cont">
+            <div class="dot" href=""></div>
         </div>
     </section>
     <aside>
@@ -127,6 +150,7 @@
             <a id="addPost" href="createPoster.html"> + </a>
             <a id="profile" href="profile.html"> profile </a>
         </nav>
+        
     </aside>
 
 <script src="main.js"></script>

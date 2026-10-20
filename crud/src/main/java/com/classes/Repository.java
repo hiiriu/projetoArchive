@@ -1,6 +1,7 @@
 package com.classes;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -10,7 +11,7 @@ import com.classes.model.User;
 
 @ApplicationScoped
 public class Repository {
-    @PersistenceContext
+    @PersistenceContext(unitName = "myPU")
     private EntityManager em;
 
     @Transactional // try catch
@@ -19,7 +20,7 @@ public class Repository {
         return user;
     }
 
-     public List<User> listarTodos() {
+    public List<User> listarTodos() {
         return em.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
 
@@ -31,20 +32,21 @@ public class Repository {
     }
 
     public User findByUsername(String username) {
-        return em.createQuery(
-            "SELECT u FROM User WHERE u.username = :username",
-            User.class
-        ).setParameter("username", username)
-        .getResultStream()
-        .findFirst()
-        .orElse(null);
+        try {
+            return em.createQuery(
+                    "select u from User u where u.username = :username", User.class)
+                    .setParameter("username", username)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
-    
 
-    // ------------------------------------ POSTER -----------------------------------------
+    // ---------------------- POSTER ------------------------
     @Transactional
     public Poster savePoster(Poster poster) {
         em.persist(poster);
+        em.flush();
         return poster;
     }
 
@@ -57,22 +59,8 @@ public class Repository {
         return em.createQuery("SELECT p FROM Poster p", Poster.class).getResultList();
     }
 
-
-     // Alteraoes User ----------------------------------
     @Transactional
-    public void delete(int id) {
-        User u = em.find(User.class, id);
-        em.remove(u);
+    public Poster savePosterUpdate(Poster poster) {
+        return em.merge(poster);
     }
-    @Transactional
-    public void change(int id, User user) {
-        User u = em.find(User.class, id);
-        u.setUsername(user.getUsername());
-        u.setEmail(user.getEmail());
-        u.setPassword(user.getPassword());
-    }
-  
 }
-
-
-  
